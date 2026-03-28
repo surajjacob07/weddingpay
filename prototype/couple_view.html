@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeddingPay — Couple Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF8EE;
+    --deep: #1A1410;
+    --warm: #3D2B1F;
+    --cream: #FAF7F2;
+    --blush: #F5EDE3;
+    --sage: #8A9E8C;
+    --muted: #9B8B7A;
+    --border: #E8DDD0;
+    --success: #5C8C6A;
+    --card-shadow: 0 2px 24px rgba(26,20,16,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+    background: var(--deep);
+    display: flex; flex-direction: column;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    padding: 32px 28px 24px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .sidebar-logo .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .sidebar-logo .sub {
+    font-size: 10px; color: var(--muted); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-top: 3px;
+  }
+  .couple-info {
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .couple-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #8B6914);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 18px; color: white;
+    margin-bottom: 10px;
+  }
+  .couple-name { font-size: 13px; font-weight: 500; color: white; }
+  .couple-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .plan-badge {
+    display: inline-block; margin-top: 8px;
+    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
+  }
+  .nav { flex: 1; padding: 16px 0; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 28px; cursor: pointer;
+    font-size: 13px; color: #8A7A6A;
+    transition: all 0.2s; border-left: 3px solid transparent;
+  }
+  .nav-item:hover { color: white; background: rgba(255,255,255,0.04); }
+  .nav-item.active {
+    color: var(--gold); background: rgba(201,168,76,0.08);
+    border-left-color: var(--gold);
+  }
+  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+  .sidebar-bottom {
+    padding: 20px 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 11px; color: var(--muted);
+  }
+  .days-left {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; color: var(--gold);
+  }
+
+  /* MAIN CONTENT */
+  .main { margin-left: 240px; padding: 40px 48px; }
+
+  /* HEADER */
+  .page-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 40px;
+  }
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300; color: var(--deep);
+  }
+  .page-title em { font-style: italic; color: var(--gold); }
+  .page-subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .btn-primary {
+    background: var(--gold); color: white;
+    border: none; padding: 10px 20px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #B8923E; }
+  .btn-outline {
+    background: transparent; color: var(--warm);
+    border: 1px solid var(--border); padding: 10px 20px; border-radius: 6px;
+    font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* STAT CARDS */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: white; border-radius: 12px;
+    padding: 24px; border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px; font-weight: 600; color: var(--deep);
+    margin-top: 6px; line-height: 1;
+  }
+  .stat-sub { font-size: 11px; color: var(--sage); margin-top: 6px; }
+  .stat-icon { position: absolute; right: 20px; top: 20px; font-size: 20px; opacity: 0.2; }
+
+  /* SECTION LAYOUT */
+  .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .section-full { margin-bottom: 24px; }
+
+  .card {
+    background: white; border-radius: 12px;
+    border: 1px solid var(--border); box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 600; color: var(--deep);
+  }
+  .card-action {
+    font-size: 12px; color: var(--gold); cursor: pointer;
+    font-weight: 500; text-decoration: none;
+  }
+  .card-body { padding: 20px 24px; }
+
+  /* GIFT POOL WALLET */
+  .wallet-visual {
+    background: linear-gradient(135deg, var(--deep) 0%, var(--warm) 100%);
+    border-radius: 12px; padding: 28px 32px;
+    position: relative; overflow: hidden; margin-bottom: 20px;
+  }
+  .wallet-visual::after {
+    content: '✦';
+    position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+    font-size: 80px; color: rgba(201,168,76,0.08);
+  }
+  .wallet-label { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.12em; text-transform: uppercase; }
+  .wallet-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px; font-weight: 300; color: white; margin-top: 8px;
+    line-height: 1;
+  }
+  .wallet-amount span { font-size: 24px; color: var(--gold-light); }
+  .wallet-meta { display: flex; gap: 32px; margin-top: 16px; }
+  .wallet-meta-item .wm-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; }
+  .wallet-meta-item .wm-val { font-size: 14px; color: white; margin-top: 2px; }
+  .wallet-progress {
+    height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px;
+    margin-top: 20px;
+  }
+  .wallet-progress-fill {
+    height: 100%; background: var(--gold); border-radius: 2px;
+    width: 68%;
+  }
+  .wallet-progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 6px;
+  }
+
+  /* REGISTRY CATEGORIES */
+  .registry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .registry-item {
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .registry-item:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .registry-item-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .registry-category {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .registry-emoji { font-size: 18px; }
+  .registry-name { font-size: 13px; font-weight: 500; color: var(--deep); margin-bottom: 6px; }
+  .registry-progress-bar {
+    height: 3px; background: var(--border); border-radius: 2px;
+  }
+  .registry-progress-fill {
+    height: 100%; background: var(--gold); border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .registry-amounts {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--muted); margin-top: 6px;
+  }
+  .registry-amounts .raised { color: var(--success); font-weight: 500; }
+
+  /* GUEST CONTRIBUTIONS */
+  .gift-list { }
+  .gift-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .gift-item:last-child { border-bottom: none; }
+  .gift-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blush), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--warm);
+    flex-shrink: 0;
+  }
+  .gift-info { flex: 1; }
+  .gift-name { font-size: 13px; font-weight: 500; }
+  .gift-cat { font-size: 11px; color: var(--muted); }
+  .gift-amount { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--success); }
+  .gift-time { font-size: 10px; color: var(--muted); }
+  .gift-has-media { 
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--blush); border: 1px solid var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; cursor: pointer;
+  }
+
+  /* VENDOR CONSOLE */
+  .vendor-list { }
+  .vendor-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .vendor-item:last-child { border-bottom: none; }
+  .vendor-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: var(--blush); display: flex; align-items: center;
+    justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .vendor-info { flex: 1; }
+  .vendor-name { font-size: 13px; font-weight: 500; }
+  .vendor-type { font-size: 11px; color: var(--muted); }
+  .vendor-amount { text-align: right; }
+  .vendor-due { font-size: 13px; font-weight: 500; color: var(--warm); }
+  .vendor-status {
+    font-size: 10px; padding: 2px 8px; border-radius: 20px;
+    margin-top: 3px; display: inline-block;
+  }
+  .status-pending { background: #FFF8E6; color: #B8860B; }
+  .status-paid { background: #EBF5ED; color: var(--success); }
+  .status-escrow { background: #E8F0FE; color: #3366CC; }
+
+  /* INVITATION SHARE PANEL */
+  .invite-panel {
+    background: var(--gold-pale); border: 1px solid var(--gold-light);
+    border-radius: 10px; padding: 20px;
+  }
+  .invite-link-row {
+    display: flex; gap: 10px; margin: 12px 0;
+  }
+  .invite-link-input {
+    flex: 1; background: white; border: 1px solid var(--border);
+    border-radius: 6px; padding: 9px 14px; font-size: 12px;
+    color: var(--muted); font-family: 'DM Sans', sans-serif;
+  }
+  .share-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .share-btn {
+    padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
+    background: white; font-size: 12px; cursor: pointer; display: flex;
+    align-items: center; gap: 6px; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .share-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* MICROSITE PREVIEW */
+  .microsite-preview {
+    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+  }
+  .microsite-hero {
+    height: 140px;
+    background: linear-gradient(160deg, #1A1410 0%, #3D2B1F 50%, #C9A84C 100%);
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+  .microsite-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-style: italic; color: white; text-align: center;
+  }
+  .microsite-body { padding: 14px 16px; background: white; }
+  .microsite-stats { display: flex; gap: 20px; }
+  .ms-stat { text-align: center; }
+  .ms-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--deep); }
+  .ms-stat-lab { font-size: 10px; color: var(--muted); }
+  .btn-edit-page {
+    width: 100%; margin-top: 12px; background: transparent;
+    border: 1px dashed var(--border); border-radius: 6px;
+    padding: 9px; font-size: 12px; color: var(--muted); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .btn-edit-page:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* TABS */
+  .tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab {
+    padding: 10px 18px; font-size: 12px; cursor: pointer;
+    color: var(--muted); border-bottom: 2px solid transparent;
+    transition: all 0.2s; font-weight: 500;
+  }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* NOTIFICATION DOT */
+  .notif-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+    display: inline-block; margin-left: 6px; vertical-align: middle;
+  }
+
+  /* RESPONSIVE TOUCH */
+  @media (max-width: 1200px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .section-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .stat-card, .card { animation: fadeUp 0.4s ease both; }
+  .stat-card:nth-child(2) { animation-delay: 0.05s; }
+  .stat-card:nth-child(3) { animation-delay: 0.1s; }
+  .stat-card:nth-child(4) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">WeddingPay</div>
+    <div class="sub">Powered by Amazon Pay</div>
+  </div>
+  <div class="couple-info">
+    <div class="couple-avatar">A&R</div>
+    <div class="couple-name">Aanya & Rohan Mehta</div>
+    <div class="couple-date">📅 28 November 2026 · Mumbai</div>
+    <span class="plan-badge">✦ Premium Plan</span>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active"><span class="icon">◈</span> Dashboard</div>
+    <div class="nav-item"><span class="icon">♡</span> Registry Builder</div>
+    <div class="nav-item"><span class="icon">✉</span> Invitations <span class="notif-dot"></span></div>
+    <div class="nav-item"><span class="icon">◎</span> Wedding Story</div>
+    <div class="nav-item"><span class="icon">◇</span> Gift Pool</div>
+    <div class="nav-item"><span class="icon">⬡</span> Vendor Console</div>
+    <div class="nav-item"><span class="icon">◉</span> Analytics</div>
+    <div class="nav-item"><span class="icon">⚙</span> Settings</div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div style="font-size:10px;color:#5a4a3a;margin-bottom:6px">Days to your wedding</div>
+    <div class="days-left">246</div>
+    <div style="font-size:10px;color:#5a4a3a;margin-top:4px">days of magic ahead</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Good morning, <em>Aanya</em> 🌸</div>
+      <div class="page-subtitle">Here's your gifting overview — 246 days to go</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">📤 Share Registry</button>
+      <button class="btn-primary">+ Add Registry Item</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">♡</div>
+      <div class="stat-label">Gift Pool Balance</div>
+      <div class="stat-value"><span style="font-size:16px;color:var(--muted)">₹</span>3,42,500</div>
+      <div class="stat-sub">↑ ₹18,000 this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">◉</div>
+      <div class="stat-label">Guests Gifted</div>
+      <div class="stat-value">84</div>
+      <div class="stat-sub">of 240 invited · 35% rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">◈</div>
+      <div class="stat-label">Registry Fulfilled</div>
+      <div class="stat-value">68<span style="font-size:16px;color:var(--muted)">%</span></div>
+      <div class="stat-sub">5 of 8 categories funded</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⬡</div>
+      <div class="stat-label">Vendor Payments</div>
+      <div class="stat-value"><span style="font-size:16px;color:var(--muted)">₹</span>1,15,000</div>
+      <div class="stat-sub">3 vendors paid · ₹85K pending</div>
+    </div>
+  </div>
+
+  <!-- ROW 1 -->
+  <div class="section-grid">
+    <!-- GIFT POOL WALLET -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Gift Pool Wallet</div>
+        <a class="card-action">View All Transactions →</a>
+      </div>
+      <div class="card-body">
+        <div class="wallet-visual">
+          <div class="wallet-label">Amazon Pay Gift Card Balance</div>
+          <div class="wallet-amount"><span>₹</span>3,42,500</div>
+          <div class="wallet-meta">
+            <div class="wallet-meta-item">
+              <div class="wm-label">Target</div>
+              <div class="wm-val">₹5,00,000</div>
+            </div>
+            <div class="wallet-meta-item">
+              <div class="wm-label">Cards Issued</div>
+              <div class="wm-val">84 cards</div>
+            </div>
+            <div class="wallet-meta-item">
+              <div class="wm-label">Float Earning</div>
+              <div class="wm-val">₹3,420 p.a.</div>
+            </div>
+          </div>
+          <div class="wallet-progress"><div class="wallet-progress-fill"></div></div>
+          <div class="wallet-progress-label"><span>₹0</span><span>68% funded</span><span>₹5,00,000</span></div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn-outline" style="flex:1;font-size:12px">📄 Download Statement</button>
+          <button class="btn-primary" style="flex:1;font-size:12px">💳 Pay a Vendor</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTRY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Your Registry</div>
+        <a class="card-action">Edit Registry →</a>
+      </div>
+      <div class="card-body">
+        <div class="registry-grid">
+          <div class="registry-item">
+            <div class="registry-item-header">
+              <div class="registry-category">Nest</div>
+              <div class="registry-emoji">🏠</div>
+            </div>
+            <div class="registry-name">Home Appliances</div>
+            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:90%"></div></div>
+            <div class="registry-amounts"><span class="raised">₹90,000</span><span>of ₹1,00,000</span></div>
+          </div>
+          <div class="registry-item">
+            <div class="registry-item-header">
+              <div class="registry-category">Wander</div>
+              <div class="registry-emoji">✈️</div>
+            </div>
+            <div class="registry-name">Honeymoon Fund</div>
+            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:55%"></div></div>
+            <div class="registry-amounts"><span class="raised">₹82,500</span><span>of ₹1,50,000</span></div>
+          </div>
+          <div class="registry-item">
+            <div class="registry-item-header">
+              <div class="registry-category">Celebrate</div>
+              <div class="registry-emoji">🥂</div>
+            </div>
+            <div class="registry-name">Wedding Décor</div>
+            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:80%"></div></div>
+            <div class="registry-amounts"><span class="raised">₹1,20,000</span><span>of ₹1,50,000</span></div>
+          </div>
+          <div class="registry-item">
+            <div class="registry-item-header">
+              <div class="registry-category">Bless</div>
+              <div class="registry-emoji">🙏</div>
+            </div>
+            <div class="registry-name">Puja & Rituals</div>
+            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:40%"></div></div>
+            <div class="registry-amounts"><span class="raised">₹20,000</span><span>of ₹50,000</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="section-grid">
+    <!-- RECENT GIFTS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Recent Gifts</div>
+        <a class="card-action">View All 84 →</a>
+      </div>
+      <div class="card-body">
+        <div class="tab-row">
+          <div class="tab active">All</div>
+          <div class="tab">With Messages</div>
+          <div class="tab">Pending Thanks</div>
+        </div>
+        <div class="gift-list">
+          <div class="gift-item">
+            <div class="gift-avatar">P</div>
+            <div class="gift-info">
+              <div class="gift-name">Priya Sharma</div>
+              <div class="gift-cat">Honeymoon Fund · 🎥 Video message</div>
+            </div>
+            <div style="text-align:right">
+              <div class="gift-amount">₹5,000</div>
+              <div class="gift-time">2 hours ago</div>
+            </div>
+            <div class="gift-has-media">▶</div>
+          </div>
+          <div class="gift-item">
+            <div class="gift-avatar">V</div>
+            <div class="gift-info">
+              <div class="gift-name">Vikram Nair</div>
+              <div class="gift-cat">Home Appliances</div>
+            </div>
+            <div style="text-align:right">
+              <div class="gift-amount">₹11,000</div>
+              <div class="gift-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="gift-item">
+            <div class="gift-avatar">S</div>
+            <div class="gift-info">
+              <div class="gift-name">Sunita & Raj Kapoor</div>
+              <div class="gift-cat">Wedding Décor · 🎤 Voice message</div>
+            </div>
+            <div style="text-align:right">
+              <div class="gift-amount">₹21,000</div>
+              <div class="gift-time">2 days ago</div>
+            </div>
+            <div class="gift-has-media">🔊</div>
+          </div>
+          <div class="gift-item">
+            <div class="gift-avatar">D</div>
+            <div class="gift-info">
+              <div class="gift-name">Deepika Malhotra</div>
+              <div class="gift-cat">Puja & Rituals</div>
+            </div>
+            <div style="text-align:right">
+              <div class="gift-amount">₹3,500</div>
+              <div class="gift-time">3 days ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENDOR CONSOLE -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Vendor Console</div>
+        <a class="card-action">+ Add Vendor</a>
+      </div>
+      <div class="card-body">
+        <div style="background:var(--gold-pale);border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:11px;color:var(--muted)">Available to pay vendors</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--deep)">₹3,42,500</div>
+          </div>
+          <button class="btn-primary" style="font-size:12px">Initiate Payment</button>
+        </div>
+        <div class="vendor-list">
+          <div class="vendor-item">
+            <div class="vendor-icon">🍽️</div>
+            <div class="vendor-info">
+              <div class="vendor-name">Regal Caterers</div>
+              <div class="vendor-type">Catering · GST Verified ✓</div>
+            </div>
+            <div class="vendor-amount">
+              <div class="vendor-due">₹80,000</div>
+              <div><span class="vendor-status status-pending">Pending</span></div>
+            </div>
+          </div>
+          <div class="vendor-item">
+            <div class="vendor-icon">🌸</div>
+            <div class="vendor-info">
+              <div class="vendor-name">Blooms & Beyond</div>
+              <div class="vendor-type">Floral Décor · GST Verified ✓</div>
+            </div>
+            <div class="vendor-amount">
+              <div class="vendor-due">₹45,000</div>
+              <div><span class="vendor-status status-paid">Paid ✓</span></div>
+            </div>
+          </div>
+          <div class="vendor-item">
+            <div class="vendor-icon">📸</div>
+            <div class="vendor-info">
+              <div class="vendor-name">Frames by Arjun</div>
+              <div class="vendor-type">Photography</div>
+            </div>
+            <div class="vendor-amount">
+              <div class="vendor-due">₹35,000</div>
+              <div><span class="vendor-status status-escrow">In Escrow</span></div>
+            </div>
+          </div>
+          <div class="vendor-item">
+            <div class="vendor-icon">🎵</div>
+            <div class="vendor-info">
+              <div class="vendor-name">Rhythm Entertainment</div>
+              <div class="vendor-type">Music & DJ</div>
+            </div>
+            <div class="vendor-amount">
+              <div class="vendor-due">₹25,000</div>
+              <div><span class="vendor-status status-paid">Paid ✓</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3 -->
+  <div class="section-grid">
+    <!-- SHARE / INVITE -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Invite Guests</div>
+        <a class="card-action">Manage Invitations →</a>
+      </div>
+      <div class="card-body">
+        <div class="invite-panel">
+          <div style="font-size:13px;font-weight:500;color:var(--deep)">Your wedding registry link</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">Share this link — guests need no app or account</div>
+          <div class="invite-link-row">
+            <input class="invite-link-input" value="weddingpay.in/aanya-rohan-2026" readonly>
+            <button class="btn-primary" style="font-size:12px">Copy</button>
+          </div>
+          <div class="share-buttons">
+            <button class="share-btn">💬 WhatsApp</button>
+            <button class="share-btn">📧 Email</button>
+            <button class="share-btn">📱 SMS Blast</button>
+            <button class="share-btn">📋 QR Code</button>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Invitation stats</div>
+          <div style="display:flex;gap:24px">
+            <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600">240</div><div style="font-size:11px;color:var(--muted)">Invited</div></div>
+            <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--success)">84</div><div style="font-size:11px;color:var(--muted)">Gifted</div></div>
+            <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--gold)">156</div><div style="font-size:11px;color:var(--muted)">Pending</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MICROSITE PREVIEW -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Wedding Story Microsite</div>
+        <a class="card-action">Preview Live →</a>
+      </div>
+      <div class="card-body">
+        <div class="microsite-preview">
+          <div class="microsite-hero">
+            <div class="microsite-title">Aanya & Rohan<br><span style="font-size:16px;font-style:normal;color:var(--gold-light)">28 November 2026 · Mumbai</span></div>
+          </div>
+          <div class="microsite-body">
+            <div class="microsite-stats">
+              <div class="ms-stat"><div class="ms-stat-val">84</div><div class="ms-stat-lab">Gifts</div></div>
+              <div class="ms-stat"><div class="ms-stat-val">4</div><div class="ms-stat-lab">Categories</div></div>
+              <div class="ms-stat"><div class="ms-stat-val">68%</div><div class="ms-stat-lab">Funded</div></div>
+            </div>
+            <button class="btn-edit-page">✏️ Edit Story Page</button>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:11px;color:var(--muted)">
+          Your custom domain: <span style="color:var(--gold);font-weight:500">aanya-rohan.weddingpay.in</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

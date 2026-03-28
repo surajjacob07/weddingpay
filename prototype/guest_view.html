@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aanya & Rohan — Gift Registry · WeddingPay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF8EE;
+    --deep: #1A1410;
+    --warm: #3D2B1F;
+    --cream: #FAF7F2;
+    --blush: #F5EDE3;
+    --sage: #8A9E8C;
+    --muted: #9B8B7A;
+    --border: #E8DDD0;
+    --success: #5C8C6A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 540px;
+    background: linear-gradient(170deg, #0E0B08 0%, #1A1410 40%, #2D1F14 70%, #C9A84C 140%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 60px 24px 80px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(201,168,76,0.15) 0%, transparent 60%);
+  }
+  .hero-ornament {
+    font-size: 13px; letter-spacing: 0.3em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hero-ornament::before, .hero-ornament::after {
+    content: ''; display: block; height: 1px;
+    width: 40px; background: var(--gold); opacity: 0.5;
+  }
+  .hero-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 300; font-style: italic; color: white;
+    line-height: 1.05; letter-spacing: -0.01em;
+    position: relative; z-index: 1;
+  }
+  .hero-ampersand { color: var(--gold); }
+  .hero-date {
+    margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.6);
+    letter-spacing: 0.12em; text-transform: uppercase; position: relative; z-index: 1;
+  }
+  .hero-story {
+    max-width: 520px; margin-top: 24px;
+    font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.55);
+    font-style: italic; position: relative; z-index: 1;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 36px;
+    position: relative; z-index: 1;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; color: var(--gold);
+  }
+  .hero-stat-lab { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-top: 4px; }
+  .hero-divider { width: 1px; background: rgba(255,255,255,0.1); }
+
+  /* FLOATING SCROLL CTA */
+  .scroll-cta {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2;
+  }
+  .scroll-cta span { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+  .scroll-arrow { color: var(--gold); font-size: 18px; animation: bounce 1.5s ease-in-out infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+  /* NAV STRIP */
+  .nav-strip {
+    background: white; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 40px;
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; color: var(--deep);
+  }
+  .nav-brand strong { color: var(--gold); }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-link { font-size: 13px; color: var(--muted); cursor: pointer; }
+  .nav-link:hover { color: var(--deep); }
+  .nav-gift-btn {
+    background: var(--gold); color: white;
+    border: none; padding: 9px 20px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* MAIN CONTENT */
+  .content { max-width: 900px; margin: 0 auto; padding: 60px 24px 80px; }
+
+  /* SECTION HEADER */
+  .section-header { text-align: center; margin-bottom: 40px; }
+  .section-tag {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 300; color: var(--deep);
+  }
+  .section-subtitle { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+  /* REGISTRY CARDS */
+  .registry-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 60px; }
+  @media(max-width: 640px) { .registry-grid { grid-template-columns: 1fr; } }
+
+  .registry-card {
+    background: white; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(26,20,16,0.06);
+    cursor: pointer; transition: all 0.25s;
+  }
+  .registry-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 40px rgba(26,20,16,0.12);
+    border-color: var(--gold-light);
+  }
+  .registry-card-hero {
+    height: 120px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-hero-nest { background: linear-gradient(135deg, #F5EDE3, #E8D5A3); }
+  .card-hero-wander { background: linear-gradient(135deg, #E3EDF5, #D5C5A3); }
+  .card-hero-celebrate { background: linear-gradient(135deg, #F5E3ED, #E3A3D5); }
+  .card-hero-bless { background: linear-gradient(135deg, #E3F5E3, #A3D5A3); }
+  .card-hero-emoji { font-size: 52px; }
+  .registry-card-body { padding: 20px; }
+  .rc-category {
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .rc-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; }
+  .rc-desc { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .rc-progress-bar { height: 3px; background: var(--border); border-radius: 2px; margin: 14px 0 8px; }
+  .rc-progress-fill { height: 100%; border-radius: 2px; background: var(--gold); }
+  .rc-amounts { display: flex; justify-content: space-between; font-size: 12px; }
+  .rc-raised { color: var(--success); font-weight: 500; }
+  .rc-target { color: var(--muted); }
+  .rc-cta {
+    width: 100%; margin-top: 14px; padding: 11px;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 13px; color: var(--deep);
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-weight: 500; transition: all 0.2s;
+  }
+  .rc-cta:hover { background: var(--gold); color: white; border-color: var(--gold); }
+  .rc-fulfilled {
+    background: var(--gold-pale); border-color: var(--gold-light);
+    color: var(--gold); font-size: 12px;
+  }
+
+  /* CONTRIBUTE MODAL OVERLAY */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(26,20,16,0.7);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: white; border-radius: 20px; width: 100%; max-width: 460px;
+    overflow: hidden; transform: translateY(20px); transition: transform 0.3s;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-hero {
+    height: 100px; background: linear-gradient(135deg, var(--deep), var(--warm));
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .modal-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-style: italic; color: white;
+  }
+  .modal-close {
+    position: absolute; right: 16px; top: 16px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: none; color: white;
+    cursor: pointer; font-size: 14px;
+  }
+  .modal-body { padding: 28px; }
+  .modal-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .amount-chip {
+    padding: 10px; text-align: center; border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .amount-chip:hover, .amount-chip.selected { background: var(--gold); color: white; border-color: var(--gold); }
+  .custom-amount {
+    width: 100%; border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; font-size: 15px; font-family: 'DM Sans', sans-serif;
+    margin-bottom: 20px; background: var(--cream);
+  }
+  .custom-amount:focus { outline: none; border-color: var(--gold); background: white; }
+  .guest-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .field-input {
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 11px 14px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+    background: var(--cream); width: 100%;
+  }
+  .field-input:focus { outline: none; border-color: var(--gold); background: white; }
+  .media-section {
+    background: var(--gold-pale); border: 1px dashed var(--gold-light);
+    border-radius: 10px; padding: 14px; margin-bottom: 20px; text-align: center;
+  }
+  .media-section p { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .media-btns { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+  .media-btn {
+    padding: 8px 14px; border-radius: 6px;
+    border: 1px solid var(--gold-light); background: white;
+    font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .media-btn:hover { background: var(--gold); color: white; border-color: var(--gold); }
+  .pay-methods { display: flex; gap: 8px; margin-bottom: 20px; }
+  .pay-method {
+    flex: 1; padding: 10px; text-align: center; border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500;
+    transition: all 0.2s;
+  }
+  .pay-method:hover, .pay-method.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--warm); }
+  .pay-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .btn-pay-now {
+    width: 100%; padding: 14px; background: var(--gold); color: white;
+    border: none; border-radius: 10px; font-size: 15px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .btn-pay-now:hover { background: #B8923E; }
+  .secure-note {
+    text-align: center; font-size: 11px; color: var(--muted);
+    margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+
+  /* SUCCESS STATE */
+  .success-overlay {
+    position: fixed; inset: 0; background: rgba(26,20,16,0.85);
+    z-index: 300; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .success-overlay.show { opacity: 1; pointer-events: all; }
+  .success-card {
+    background: white; border-radius: 20px; padding: 48px 40px;
+    text-align: center; max-width: 360px; width: 90%;
+    transform: scale(0.9); transition: transform 0.3s;
+  }
+  .success-overlay.show .success-card { transform: scale(1); }
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #B8923E);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 20px;
+  }
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 600; color: var(--deep); margin-bottom: 8px;
+  }
+  .success-msg { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .success-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; color: var(--gold); font-weight: 300; margin: 16px 0;
+  }
+  .thankyou-note {
+    background: var(--gold-pale); border-radius: 10px; padding: 14px;
+    font-size: 13px; color: var(--warm); margin: 16px 0; font-style: italic;
+    line-height: 1.6;
+  }
+  .btn-close-success {
+    width: 100%; padding: 12px; background: var(--deep); color: white;
+    border: none; border-radius: 8px; font-size: 14px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; margin-top: 4px;
+  }
+
+  /* COUPLE STORY */
+  .story-section { margin-bottom: 60px; }
+  .story-card {
+    background: white; border-radius: 16px; padding: 40px;
+    border: 1px solid var(--border); text-align: center;
+    box-shadow: 0 2px 20px rgba(26,20,16,0.06);
+  }
+  .story-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; font-style: italic;
+    color: var(--deep); line-height: 1.4; margin-bottom: 20px;
+  }
+  .story-quote::before { content: '❝ '; color: var(--gold); }
+  .story-quote::after { content: ' ❞'; color: var(--gold); }
+  .story-body { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 560px; margin: 0 auto; }
+  .couple-photos {
+    display: flex; gap: 12px; justify-content: center; margin: 24px 0;
+  }
+  .couple-photo {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blush), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; border: 3px solid white;
+    box-shadow: 0 4px 12px rgba(26,20,16,0.1);
+  }
+  .couple-photo-connector {
+    display: flex; align-items: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold);
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--deep); text-align: center;
+    padding: 32px 24px;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--gold); margin-bottom: 8px;
+  }
+  .footer-sub { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .registry-card { animation: fadeUp 0.4s ease both; }
+  .registry-card:nth-child(2) { animation-delay: 0.08s; }
+  .registry-card:nth-child(3) { animation-delay: 0.16s; }
+  .registry-card:nth-child(4) { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ornament">Wedding Registry</div>
+  <div class="hero-names">
+    Aanya <span class="hero-ampersand">&</span> Rohan
+  </div>
+  <div class="hero-date">28 November 2026 · The Taj Mahal Palace, Mumbai</div>
+  <div class="hero-story">
+    "From a chance meeting at a Pune café to the adventure of a lifetime — we can't wait to begin our forever with all of you."
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-val">246</div>
+      <div class="hero-stat-lab">Days Away</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">84</div>
+      <div class="hero-stat-lab">Gifts Given</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">68%</div>
+      <div class="hero-stat-lab">Funded</div>
+    </div>
+  </div>
+  <div class="scroll-cta">
+    <span>Gift them something meaningful</span>
+    <div class="scroll-arrow">↓</div>
+  </div>
+</section>
+
+<!-- NAV STRIP -->
+<nav class="nav-strip">
+  <div class="nav-brand"><strong>WeddingPay</strong> · Aanya & Rohan</div>
+  <div class="nav-links">
+    <span class="nav-link">Our Story</span>
+    <span class="nav-link">Registry</span>
+    <span class="nav-link">Gallery</span>
+  </div>
+  <button class="nav-gift-btn" onclick="openModal('Honeymoon Fund', '🌍', 'Wander')">♡ Give a Gift</button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+  <!-- OUR STORY -->
+  <div class="story-section">
+    <div class="section-header">
+      <div class="section-tag">Our Story</div>
+      <div class="section-title">A love written in the stars</div>
+    </div>
+    <div class="story-card">
+      <div class="couple-photos">
+        <div class="couple-photo">👰</div>
+        <div class="couple-photo-connector">♡</div>
+        <div class="couple-photo">🤵</div>
+      </div>
+      <div class="story-quote">We found each other when we least expected it</div>
+      <div class="story-body">
+        We met at a rainy Sunday in a Koregaon Park café in 2021 — Rohan was trying to fix his laptop, Aanya was judging his terrible taste in coffee. Three years, fourteen cities, and one unforgettable proposal at Udaipur later, here we are.<br><br>
+        Our wedding is not just a celebration of our love — it's a thank you to every person who has been part of our story. Your presence (and your presents!) mean the world to us. 💛
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTRY -->
+  <div>
+    <div class="section-header">
+      <div class="section-tag">Gift Registry</div>
+      <div class="section-title">Help us build our beginning</div>
+      <div class="section-subtitle">No app, no account needed — just choose a category and pay securely via Amazon Pay, UPI, or card</div>
+    </div>
+
+    <div class="registry-grid">
+      <!-- NEST -->
+      <div class="registry-card" onclick="openModal('Home Appliances', '🏠', 'Nest')">
+        <div class="registry-card-hero card-hero-nest">
+          <div class="card-hero-emoji">🏠</div>
+        </div>
+        <div class="registry-card-body">
+          <div class="rc-category">Nest · Home</div>
+          <div class="rc-name">Home Appliances</div>
+          <div class="rc-desc">Help us set up our first home together — from the coffee maker Aanya can't live without, to the air fryer Rohan insists they "need".</div>
+          <div class="rc-progress-bar"><div class="rc-progress-fill" style="width:90%"></div></div>
+          <div class="rc-amounts"><span class="rc-raised">₹90,000 raised</span><span class="rc-target">of ₹1,00,000</span></div>
+          <button class="rc-cta">Contribute to this ♡</button>
+        </div>
+      </div>
+
+      <!-- WANDER -->
+      <div class="registry-card" onclick="openModal('Honeymoon Fund', '✈️', 'Wander')">
+        <div class="registry-card-hero card-hero-wander">
+          <div class="card-hero-emoji">✈️</div>
+        </div>
+        <div class="registry-card-body">
+          <div class="rc-category">Wander · Travel</div>
+          <div class="rc-name">Honeymoon Fund</div>
+          <div class="rc-desc">We're dreaming of Tuscany and Santorini. Help us make our first trip as husband and wife utterly magical and unforgettable.</div>
+          <div class="rc-progress-bar"><div class="rc-progress-fill" style="width:55%"></div></div>
+          <div class="rc-amounts"><span class="rc-raised">₹82,500 raised</span><span class="rc-target">of ₹1,50,000</span></div>
+          <button class="rc-cta">Contribute to this ♡</button>
+        </div>
+      </div>
+
+      <!-- CELEBRATE -->
+      <div class="registry-card" onclick="openModal('Wedding Décor', '🥂', 'Celebrate')">
+        <div class="registry-card-hero card-hero-celebrate">
+          <div class="card-hero-emoji">🥂</div>
+        </div>
+        <div class="registry-card-body">
+          <div class="rc-category">Celebrate · Events</div>
+          <div class="rc-name">Wedding Décor</div>
+          <div class="rc-desc">The marigolds, the fairy lights, the flower walls — help us make our wedding look exactly like the dream we've been planning.</div>
+          <div class="rc-progress-bar"><div class="rc-progress-fill" style="width:80%"></div></div>
+          <div class="rc-amounts"><span class="rc-raised">₹1,20,000 raised</span><span class="rc-target">of ₹1,50,000</span></div>
+          <button class="rc-cta">Contribute to this ♡</button>
+        </div>
+      </div>
+
+      <!-- BLESS -->
+      <div class="registry-card" onclick="openModal('Puja & Rituals', '🙏', 'Bless')">
+        <div class="registry-card-hero card-hero-bless">
+          <div class="card-hero-emoji">🙏</div>
+        </div>
+        <div class="registry-card-body">
+          <div class="rc-category">Bless · Traditions</div>
+          <div class="rc-name">Puja & Rituals</div>
+          <div class="rc-desc">Our families' traditions are the heart of our wedding. Help us honour every ritual beautifully and meaningfully, as it deserves.</div>
+          <div class="rc-progress-bar"><div class="rc-progress-fill" style="width:40%"></div></div>
+          <div class="rc-amounts"><span class="rc-raised">₹20,000 raised</span><span class="rc-target">of ₹50,000</span></div>
+          <button class="rc-cta">Contribute to this ♡</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTRIBUTE MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-hero">
+      <div class="modal-hero-title" id="modal-title">Gift a Contribution</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-label">Choose amount</div>
+      <div class="amount-grid">
+        <div class="amount-chip" onclick="selectAmount(this, '1,100')">₹1,100</div>
+        <div class="amount-chip" onclick="selectAmount(this, '2,100')">₹2,100</div>
+        <div class="amount-chip" onclick="selectAmount(this, '5,000')">₹5,000</div>
+        <div class="amount-chip" onclick="selectAmount(this, '11,000')">₹11,000</div>
+        <div class="amount-chip" onclick="selectAmount(this, '21,000')">₹21,000</div>
+        <div class="amount-chip" onclick="selectAmount(this, '51,000')">₹51,000</div>
+      </div>
+      <input class="custom-amount" id="custom-amount" type="text" placeholder="Or enter a custom amount ₹" oninput="clearSelected()">
+
+      <div class="modal-label">Your details</div>
+      <div class="guest-fields">
+        <input class="field-input" type="text" placeholder="Your name">
+        <input class="field-input" type="tel" placeholder="Phone number">
+      </div>
+
+      <div class="media-section">
+        <div style="font-size:13px;font-weight:500;color:var(--warm)">Add a personal message 💌</div>
+        <p>Record a voice note or video with your gift — the couple will love it!</p>
+        <div class="media-btns">
+          <button class="media-btn">🎥 Record Video</button>
+          <button class="media-btn">🎤 Voice Note</button>
+          <button class="media-btn">📝 Text Only</button>
+        </div>
+      </div>
+
+      <div class="modal-label">Pay via</div>
+      <div class="pay-methods">
+        <div class="pay-method selected" onclick="selectPay(this)">
+          <span class="pay-icon">🏪</span>Amazon Pay
+        </div>
+        <div class="pay-method" onclick="selectPay(this)">
+          <span class="pay-icon">📱</span>UPI
+        </div>
+        <div class="pay-method" onclick="selectPay(this)">
+          <span class="pay-icon">💳</span>Card
+        </div>
+      </div>
+
+      <button class="btn-pay-now" onclick="showSuccess()">💛 Send Gift — ₹<span id="pay-amount">5,000</span></button>
+      <div class="secure-note">🔒 Secured by Amazon Pay · No account needed</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-overlay" id="success">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Gift Sent!</div>
+    <div class="success-amount">₹<span id="success-amount">5,000</span></div>
+    <div class="success-msg">Your gift has been added to Aanya & Rohan's Gift Pool.</div>
+    <div class="thankyou-note">
+      "Thank you from the bottom of our hearts. Every contribution brings us closer to the celebration of our dreams. See you on November 28! 💛"<br>
+      <strong style="font-family:'Cormorant Garamond',serif;font-size:16px;display:block;margin-top:8px">— Aanya & Rohan</strong>
+    </div>
+    <button class="btn-close-success" onclick="closeSuccess()">Close</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">WeddingPay</div>
+  <div class="footer-sub">Powered by Amazon Pay Gift Cards · Secured & encrypted</div>
+</footer>
+
+<script>
+  let selectedAmount = '5,000';
+
+  function openModal(name, emoji, category) {
+    document.getElementById('modal-title').textContent = `Gift: ${name} ${emoji}`;
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  function selectAmount(el, amount) {
+    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedAmount = amount;
+    document.getElementById('pay-amount').textContent = amount;
+    document.getElementById('custom-amount').value = '';
+  }
+
+  function clearSelected() {
+    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
+    const val = document.getElementById('custom-amount').value.replace(/[^0-9]/g,'');
+    if (val) {
+      selectedAmount = parseInt(val).toLocaleString('en-IN');
+      document.getElementById('pay-amount').textContent = selectedAmount;
+    }
+  }
+
+  function selectPay(el) {
+    document.querySelectorAll('.pay-method').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function showSuccess() {
+    closeModal();
+    document.getElementById('success-amount').textContent = selectedAmount;
+    document.getElementById('success').classList.add('show');
+  }
+
+  function closeSuccess() {
+    document.getElementById('success').classList.remove('show');
+  }
+
+  // Close modal on overlay click
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
