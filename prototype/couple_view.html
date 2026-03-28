@@ -7,716 +7,576 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #C9A84C;
-    --gold-light: #E8D5A3;
-    --gold-pale: #FDF8EE;
-    --deep: #1A1410;
-    --warm: #3D2B1F;
-    --cream: #FAF7F2;
-    --blush: #F5EDE3;
-    --sage: #8A9E8C;
-    --muted: #9B8B7A;
-    --border: #E8DDD0;
-    --success: #5C8C6A;
-    --card-shadow: 0 2px 24px rgba(26,20,16,0.08);
+    --gold:#C9A84C;--gold-light:#E8D5A3;--gold-pale:#FDF8EE;
+    --deep:#1A1410;--warm:#3D2B1F;--cream:#FAF7F2;
+    --blush:#F5EDE3;--muted:#9B8B7A;--border:#E8DDD0;
+    --success:#5C8C6A;--shadow:0 2px 24px rgba(26,20,16,0.08);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--deep);
-    min-height: 100vh;
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--deep);min-height:100vh;display:flex;}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:228px;background:var(--deep);display:flex;flex-direction:column;z-index:100;}
+  .s-logo{padding:26px 22px 18px;border-bottom:1px solid rgba(201,168,76,0.2);}
+  .s-logo .brand{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--gold);}
+  .s-logo .sub{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px;}
+  .s-couple{padding:14px 22px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .s-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B6914);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:white;margin-bottom:7px;}
+  .s-name{font-size:12px;font-weight:500;color:white;}
+  .s-date{font-size:10px;color:var(--muted);margin-top:2px;}
+  .s-plan{display:inline-block;margin-top:6px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px;}
+  .nav{flex:1;padding:10px 0;}
+  .ni{display:flex;align-items:center;gap:10px;padding:10px 22px;cursor:pointer;font-size:12px;color:#8A7A6A;transition:all 0.2s;border-left:3px solid transparent;}
+  .ni:hover{color:white;background:rgba(255,255,255,0.04);}
+  .ni.active{color:var(--gold);background:rgba(201,168,76,0.08);border-left-color:var(--gold);}
+  .ni .ic{font-size:13px;width:17px;text-align:center;}
+  .ndot{width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;margin-left:auto;}
+  .s-bot{padding:14px 22px;border-top:1px solid rgba(255,255,255,0.06);}
+  .days{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--gold);}
 
-  /* SIDEBAR */
-  .sidebar {
-    position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
-    background: var(--deep);
-    display: flex; flex-direction: column;
-    z-index: 100;
-  }
-  .sidebar-logo {
-    padding: 32px 28px 24px;
-    border-bottom: 1px solid rgba(201,168,76,0.2);
-  }
-  .sidebar-logo .brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 600; color: var(--gold);
-    letter-spacing: 0.04em;
-  }
-  .sidebar-logo .sub {
-    font-size: 10px; color: var(--muted); letter-spacing: 0.12em;
-    text-transform: uppercase; margin-top: 3px;
-  }
-  .couple-info {
-    padding: 20px 28px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .couple-avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), #8B6914);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif; font-size: 18px; color: white;
-    margin-bottom: 10px;
-  }
-  .couple-name { font-size: 13px; font-weight: 500; color: white; }
-  .couple-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .plan-badge {
-    display: inline-block; margin-top: 8px;
-    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold); font-size: 10px; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
-  }
-  .nav { flex: 1; padding: 16px 0; }
-  .nav-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 28px; cursor: pointer;
-    font-size: 13px; color: #8A7A6A;
-    transition: all 0.2s; border-left: 3px solid transparent;
-  }
-  .nav-item:hover { color: white; background: rgba(255,255,255,0.04); }
-  .nav-item.active {
-    color: var(--gold); background: rgba(201,168,76,0.08);
-    border-left-color: var(--gold);
-  }
-  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
-  .sidebar-bottom {
-    padding: 20px 28px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    font-size: 11px; color: var(--muted);
-  }
-  .days-left {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px; font-weight: 300; color: var(--gold);
-  }
+  .main{margin-left:228px;flex:1;}
+  .tab{display:none;padding:32px 40px;}
+  .tab.active{display:block;}
 
-  /* MAIN CONTENT */
-  .main { margin-left: 240px; padding: 40px 48px; }
+  .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;}
+  .pt{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;}
+  .pt em{font-style:italic;color:var(--gold);}
+  .ps{font-size:12px;color:var(--muted);margin-top:3px;}
+  .btn{background:var(--gold);color:white;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+  .btn:hover{background:#B8923E;}
+  .btno{background:transparent;color:var(--warm);border:1px solid var(--border);padding:8px 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+  .btno:hover{border-color:var(--gold);color:var(--gold);}
+  .card{background:white;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;}
+  .ch{padding:16px 20px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .ct{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;}
+  .ca{font-size:11px;color:var(--gold);cursor:pointer;font-weight:500;}
+  .cb{padding:16px 20px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .sc{background:white;border-radius:10px;padding:18px;border:1px solid var(--border);box-shadow:var(--shadow);}
+  .sl{font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+  .sv{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin-top:4px;line-height:1;}
+  .ss{font-size:11px;color:var(--success);margin-top:4px;}
+  .badge{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;font-weight:500;}
+  .bg{background:#EBF5ED;color:var(--success);}
+  .bb{background:#E8F0FE;color:#3366CC;}
+  .bo{background:#FFF3E0;color:#E65100;}
+  .bk{background:var(--gold-pale);color:#8B6914;border:1px solid var(--gold-light);}
 
-  /* HEADER */
-  .page-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 40px;
-  }
-  .page-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px; font-weight: 300; color: var(--deep);
-  }
-  .page-title em { font-style: italic; color: var(--gold); }
-  .page-subtitle { font-size: 13px; color: var(--muted); margin-top: 4px; }
-  .header-actions { display: flex; gap: 12px; align-items: center; }
-  .btn-primary {
-    background: var(--gold); color: white;
-    border: none; padding: 10px 20px; border-radius: 6px;
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: background 0.2s;
-  }
-  .btn-primary:hover { background: #B8923E; }
-  .btn-outline {
-    background: transparent; color: var(--warm);
-    border: 1px solid var(--border); padding: 10px 20px; border-radius: 6px;
-    font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
-  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  /* wallet */
+  .wv{background:linear-gradient(135deg,var(--deep) 0%,var(--warm) 100%);border-radius:10px;padding:22px 26px;position:relative;overflow:hidden;margin-bottom:14px;}
+  .wv::after{content:'✦';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:64px;color:rgba(201,168,76,0.08);}
+  .wl{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;}
+  .wa{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:white;margin-top:5px;line-height:1;}
+  .wa span{font-size:18px;color:var(--gold-light);}
+  .wm{display:flex;gap:22px;margin-top:12px;}
+  .wml{font-size:9px;color:rgba(255,255,255,0.4);}
+  .wmv{font-size:12px;color:white;margin-top:1px;}
+  .wb{height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin-top:14px;}
+  .wbf{height:100%;background:var(--gold);border-radius:2px;width:68%;}
+  .wbl{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,0.35);margin-top:4px;}
 
-  /* STAT CARDS */
-  .stats-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
-    margin-bottom: 32px;
-  }
-  .stat-card {
-    background: white; border-radius: 12px;
-    padding: 24px; border: 1px solid var(--border);
-    box-shadow: var(--card-shadow);
-    position: relative; overflow: hidden;
-  }
-  .stat-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--gold);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .stat-card:hover::before { opacity: 1; }
-  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
-  .stat-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 30px; font-weight: 600; color: var(--deep);
-    margin-top: 6px; line-height: 1;
-  }
-  .stat-sub { font-size: 11px; color: var(--sage); margin-top: 6px; }
-  .stat-icon { position: absolute; right: 20px; top: 20px; font-size: 20px; opacity: 0.2; }
+  /* registry mini */
+  .rg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .ri{border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all 0.2s;}
+  .ri:hover{border-color:var(--gold);background:var(--gold-pale);}
+  .rt{display:flex;justify-content:space-between;margin-bottom:7px;}
+  .rc{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+  .rn{font-size:12px;font-weight:500;margin-bottom:6px;}
+  .pb{height:3px;background:var(--border);border-radius:2px;}
+  .pf{height:100%;background:var(--gold);border-radius:2px;}
+  .pl{display:flex;justify-content:space-between;font-size:10px;margin-top:4px;color:var(--muted);}
+  .pl .ra{color:var(--success);font-weight:500;}
 
-  /* SECTION LAYOUT */
-  .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-  .section-full { margin-bottom: 24px; }
+  /* gift rows */
+  .gr{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--border);}
+  .gr:last-child{border-bottom:none;}
+  .gav{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blush),var(--gold-light));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--warm);flex-shrink:0;}
+  .gn{font-size:12px;font-weight:500;}
+  .gc{font-size:10px;color:var(--muted);}
+  .gam{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--success);margin-left:auto;}
+  .gt{font-size:10px;color:var(--muted);margin-left:7px;}
+  .gmed{width:20px;height:20px;border-radius:50%;background:var(--blush);border:1px solid var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;margin-left:5px;}
 
-  .card {
-    background: white; border-radius: 12px;
-    border: 1px solid var(--border); box-shadow: var(--card-shadow);
-    overflow: hidden;
-  }
-  .card-header {
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; font-weight: 600; color: var(--deep);
-  }
-  .card-action {
-    font-size: 12px; color: var(--gold); cursor: pointer;
-    font-weight: 500; text-decoration: none;
-  }
-  .card-body { padding: 20px 24px; }
+  /* invitations */
+  .ih{background:linear-gradient(135deg,var(--deep),var(--warm));border-radius:12px;padding:22px 26px;color:white;margin-bottom:18px;}
+  .ilb{background:rgba(255,255,255,0.08);border-radius:7px;padding:10px 14px;margin-top:10px;display:flex;gap:9px;align-items:center;}
+  .il{font-size:12px;color:var(--gold-light);flex:1;}
+  .ic2{background:var(--gold);border:none;color:white;padding:5px 12px;border-radius:5px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .sr{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;}
+  .sb{padding:7px 13px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);font-size:11px;cursor:pointer;color:white;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+  .sb:hover{background:var(--gold);border-color:var(--gold);}
+  .fr{display:flex;gap:0;margin-bottom:22px;}
+  .fs{flex:1;text-align:center;padding:16px;background:white;border:1px solid var(--border);position:relative;}
+  .fs:first-child{border-radius:10px 0 0 10px;}
+  .fs:last-child{border-radius:0 10px 10px 0;}
+  .fs::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);z-index:1;}
+  .fs:last-child::after{display:none;}
+  .fv{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;}
+  .fl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:3px;}
+  .fp{font-size:10px;color:var(--success);margin-top:2px;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{text-align:left;padding:9px 13px;background:var(--cream);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+  td{padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:var(--gold-pale);}
+  .tlink{font-size:11px;background:none;border:none;color:var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;}
 
-  /* GIFT POOL WALLET */
-  .wallet-visual {
-    background: linear-gradient(135deg, var(--deep) 0%, var(--warm) 100%);
-    border-radius: 12px; padding: 28px 32px;
-    position: relative; overflow: hidden; margin-bottom: 20px;
-  }
-  .wallet-visual::after {
-    content: '✦';
-    position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
-    font-size: 80px; color: rgba(201,168,76,0.08);
-  }
-  .wallet-label { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.12em; text-transform: uppercase; }
-  .wallet-amount {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 44px; font-weight: 300; color: white; margin-top: 8px;
-    line-height: 1;
-  }
-  .wallet-amount span { font-size: 24px; color: var(--gold-light); }
-  .wallet-meta { display: flex; gap: 32px; margin-top: 16px; }
-  .wallet-meta-item .wm-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; }
-  .wallet-meta-item .wm-val { font-size: 14px; color: white; margin-top: 2px; }
-  .wallet-progress {
-    height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px;
-    margin-top: 20px;
-  }
-  .wallet-progress-fill {
-    height: 100%; background: var(--gold); border-radius: 2px;
-    width: 68%;
-  }
-  .wallet-progress-label {
-    display: flex; justify-content: space-between;
-    font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 6px;
-  }
+  /* registry builder */
+  .rbc{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+  .rbh{display:flex;align-items:center;gap:13px;padding:14px 18px;background:white;cursor:pointer;}
+  .rbe{font-size:20px;}
+  .rbi{flex:1;}
+  .rbin{font-size:13px;font-weight:500;}
+  .rbis{font-size:10px;color:var(--muted);margin-top:2px;}
+  .rbb{background:var(--cream);padding:14px 18px;border-top:1px solid var(--border);}
+  .rar{display:flex;gap:11px;margin-bottom:11px;}
+  .ri2{border:1px solid var(--border);border-radius:6px;padding:8px 11px;font-size:12px;font-family:'DM Sans',sans-serif;background:white;}
+  .ri2:focus{outline:none;border-color:var(--gold);}
+  textarea.ri2{width:100%;resize:none;}
 
-  /* REGISTRY CATEGORIES */
-  .registry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .registry-item {
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 14px 16px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .registry-item:hover { border-color: var(--gold); background: var(--gold-pale); }
-  .registry-item-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  .registry-category {
-    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted);
-  }
-  .registry-emoji { font-size: 18px; }
-  .registry-name { font-size: 13px; font-weight: 500; color: var(--deep); margin-bottom: 6px; }
-  .registry-progress-bar {
-    height: 3px; background: var(--border); border-radius: 2px;
-  }
-  .registry-progress-fill {
-    height: 100%; background: var(--gold); border-radius: 2px;
-    transition: width 0.3s;
-  }
-  .registry-amounts {
-    display: flex; justify-content: space-between;
-    font-size: 11px; color: var(--muted); margin-top: 6px;
-  }
-  .registry-amounts .raised { color: var(--success); font-weight: 500; }
+  /* vendor */
+  .wsb{background:linear-gradient(90deg,var(--deep),var(--warm));border-radius:10px;padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .wsbv{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;}
+  .wsbl{font-size:10px;color:rgba(255,255,255,0.5);}
+  .vi{width:34px;height:34px;border-radius:7px;background:var(--blush);display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .pb2{background:var(--gold);color:white;border:none;padding:5px 12px;border-radius:5px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .pb2:hover{background:#B8923E;}
+  .pb2:disabled{background:#ccc;cursor:not-allowed;}
 
-  /* GUEST CONTRIBUTIONS */
-  .gift-list { }
-  .gift-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 0; border-bottom: 1px solid var(--border);
-  }
-  .gift-item:last-child { border-bottom: none; }
-  .gift-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--blush), var(--gold-light));
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--warm);
-    flex-shrink: 0;
-  }
-  .gift-info { flex: 1; }
-  .gift-name { font-size: 13px; font-weight: 500; }
-  .gift-cat { font-size: 11px; color: var(--muted); }
-  .gift-amount { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--success); }
-  .gift-time { font-size: 10px; color: var(--muted); }
-  .gift-has-media { 
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--blush); border: 1px solid var(--gold-light);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; cursor: pointer;
-  }
+  /* analytics */
+  .kg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+  .kc{background:white;border-radius:10px;padding:16px 18px;border:1px solid var(--border);}
+  .kl{font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+  .kv{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;margin:5px 0 2px;}
+  .kt{font-size:11px;color:var(--success);}
+  .br{display:flex;align-items:center;gap:11px;margin-bottom:9px;}
+  .brl{font-size:11px;color:var(--muted);width:110px;text-align:right;flex-shrink:0;}
+  .brt{flex:1;height:19px;background:var(--cream);border-radius:4px;overflow:hidden;}
+  .brf{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:10px;color:white;font-weight:500;}
+  .brv{font-size:11px;color:var(--muted);width:70px;}
 
-  /* VENDOR CONSOLE */
-  .vendor-list { }
-  .vendor-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 0; border-bottom: 1px solid var(--border);
-  }
-  .vendor-item:last-child { border-bottom: none; }
-  .vendor-icon {
-    width: 40px; height: 40px; border-radius: 8px;
-    background: var(--blush); display: flex; align-items: center;
-    justify-content: center; font-size: 18px; flex-shrink: 0;
-  }
-  .vendor-info { flex: 1; }
-  .vendor-name { font-size: 13px; font-weight: 500; }
-  .vendor-type { font-size: 11px; color: var(--muted); }
-  .vendor-amount { text-align: right; }
-  .vendor-due { font-size: 13px; font-weight: 500; color: var(--warm); }
-  .vendor-status {
-    font-size: 10px; padding: 2px 8px; border-radius: 20px;
-    margin-top: 3px; display: inline-block;
-  }
-  .status-pending { background: #FFF8E6; color: #B8860B; }
-  .status-paid { background: #EBF5ED; color: var(--success); }
-  .status-escrow { background: #E8F0FE; color: #3366CC; }
+  /* story */
+  .sp{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+  .sh{height:190px;background:linear-gradient(160deg,#0E0B08 0%,#1A1410 40%,#2D1F14 70%,#C9A84C 140%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;}
+  .sht{font-family:'Cormorant Garamond',serif;font-size:34px;font-style:italic;color:white;}
+  .shs{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.1em;margin-top:7px;}
+  .slb{position:absolute;top:11px;right:11px;background:rgba(92,140,106,0.9);color:white;font-size:10px;padding:3px 10px;border-radius:20px;}
+  .sbs{background:white;padding:18px 20px;}
+  .ser{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .sf label{font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:5px;}
+  .sf input,.sf textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 11px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--cream);}
+  .sf textarea{resize:none;min-height:72px;}
+  .sf input:focus,.sf textarea:focus{outline:none;border-color:var(--gold);background:white;}
+  .dr{display:flex;gap:10px;align-items:center;margin-top:14px;background:var(--gold-pale);border:1px solid var(--gold-light);border-radius:8px;padding:11px 14px;}
+  .dt{font-size:12px;color:var(--warm);font-weight:500;flex:1;}
 
-  /* INVITATION SHARE PANEL */
-  .invite-panel {
-    background: var(--gold-pale); border: 1px solid var(--gold-light);
-    border-radius: 10px; padding: 20px;
-  }
-  .invite-link-row {
-    display: flex; gap: 10px; margin: 12px 0;
-  }
-  .invite-link-input {
-    flex: 1; background: white; border: 1px solid var(--border);
-    border-radius: 6px; padding: 9px 14px; font-size: 12px;
-    color: var(--muted); font-family: 'DM Sans', sans-serif;
-  }
-  .share-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-  .share-btn {
-    padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border);
-    background: white; font-size: 12px; cursor: pointer; display: flex;
-    align-items: center; gap: 6px; transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .share-btn:hover { border-color: var(--gold); color: var(--gold); }
+  /* settings */
+  .ss2{margin-bottom:26px;}
+  .ss2 h3{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+  .srow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);}
+  .srow:last-child{border-bottom:none;}
+  .srl{font-size:13px;font-weight:500;}
+  .srs{font-size:11px;color:var(--muted);margin-top:2px;}
+  .tog{width:38px;height:20px;background:#ccc;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;}
+  .tog.on{background:var(--gold);}
+  .tog::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:2px;left:2px;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+  .tog.on::after{transform:translateX(18px);}
+  .pc{border:1px solid var(--border);border-radius:9px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+  .pc.cur{border-color:var(--gold);background:var(--gold-pale);}
+  .pn{font-size:13px;font-weight:500;}
+  .pp{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;}
 
-  /* MICROSITE PREVIEW */
-  .microsite-preview {
-    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-  }
-  .microsite-hero {
-    height: 140px;
-    background: linear-gradient(160deg, #1A1410 0%, #3D2B1F 50%, #C9A84C 100%);
-    position: relative; display: flex; align-items: center; justify-content: center;
-  }
-  .microsite-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px; font-style: italic; color: white; text-align: center;
-  }
-  .microsite-body { padding: 14px 16px; background: white; }
-  .microsite-stats { display: flex; gap: 20px; }
-  .ms-stat { text-align: center; }
-  .ms-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--deep); }
-  .ms-stat-lab { font-size: 10px; color: var(--muted); }
-  .btn-edit-page {
-    width: 100%; margin-top: 12px; background: transparent;
-    border: 1px dashed var(--border); border-radius: 6px;
-    padding: 9px; font-size: 12px; color: var(--muted); cursor: pointer;
-    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
-  }
-  .btn-edit-page:hover { border-color: var(--gold); color: var(--gold); }
+  /* modal */
+  .mb{position:fixed;inset:0;background:rgba(26,20,16,0.72);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+  .mb.open{opacity:1;pointer-events:all;}
+  .mo{background:white;border-radius:14px;width:400px;overflow:hidden;transform:translateY(14px);transition:transform 0.3s;box-shadow:0 24px 80px rgba(0,0,0,0.25);}
+  .mb.open .mo{transform:translateY(0);}
+  .moh{background:linear-gradient(135deg,var(--deep),var(--warm));padding:18px 22px;display:flex;justify-content:space-between;align-items:center;}
+  .moht{font-family:'Cormorant Garamond',serif;font-size:19px;color:white;}
+  .moc{background:rgba(255,255,255,0.15);border:none;color:white;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:12px;}
+  .mob{padding:22px;}
+  .ml{font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px;display:block;}
+  .mi{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;margin-bottom:14px;background:var(--cream);}
+  .mi:focus{outline:none;border-color:var(--gold);background:white;}
+  .mf{display:flex;gap:9px;}
+  .mf button{flex:1;padding:11px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;}
 
-  /* TABS */
-  .tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-  .tab {
-    padding: 10px 18px; font-size: 12px; cursor: pointer;
-    color: var(--muted); border-bottom: 2px solid transparent;
-    transition: all 0.2s; font-weight: 500;
-  }
-  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  /* toast */
+  .toast{position:fixed;bottom:22px;right:22px;background:var(--deep);color:white;padding:11px 18px;border-radius:8px;font-size:12px;z-index:999;transform:translateY(60px);opacity:0;transition:all 0.3s;border-left:3px solid var(--gold);}
+  .toast.show{transform:translateY(0);opacity:1;}
 
-  /* NOTIFICATION DOT */
-  .notif-dot {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
-    display: inline-block; margin-left: 6px; vertical-align: middle;
-  }
-
-  /* RESPONSIVE TOUCH */
-  @media (max-width: 1200px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .section-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .stat-card, .card { animation: fadeUp 0.4s ease both; }
-  .stat-card:nth-child(2) { animation-delay: 0.05s; }
-  .stat-card:nth-child(3) { animation-delay: 0.1s; }
-  .stat-card:nth-child(4) { animation-delay: 0.15s; }
+  @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .tab.active>*{animation:fu 0.3s ease both;}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="brand">WeddingPay</div>
-    <div class="sub">Powered by Amazon Pay</div>
-  </div>
-  <div class="couple-info">
-    <div class="couple-avatar">A&R</div>
-    <div class="couple-name">Aanya & Rohan Mehta</div>
-    <div class="couple-date">📅 28 November 2026 · Mumbai</div>
-    <span class="plan-badge">✦ Premium Plan</span>
+  <div class="s-logo"><div class="brand">WeddingPay</div><div class="sub">Powered by Amazon Pay</div></div>
+  <div class="s-couple">
+    <div class="s-av">A&R</div>
+    <div class="s-name">Aanya & Rohan Mehta</div>
+    <div class="s-date">📅 28 Nov 2026 · Mumbai</div>
+    <span class="s-plan">✦ Premium Plan</span>
   </div>
   <nav class="nav">
-    <div class="nav-item active"><span class="icon">◈</span> Dashboard</div>
-    <div class="nav-item"><span class="icon">♡</span> Registry Builder</div>
-    <div class="nav-item"><span class="icon">✉</span> Invitations <span class="notif-dot"></span></div>
-    <div class="nav-item"><span class="icon">◎</span> Wedding Story</div>
-    <div class="nav-item"><span class="icon">◇</span> Gift Pool</div>
-    <div class="nav-item"><span class="icon">⬡</span> Vendor Console</div>
-    <div class="nav-item"><span class="icon">◉</span> Analytics</div>
-    <div class="nav-item"><span class="icon">⚙</span> Settings</div>
+    <div class="ni active" onclick="go('dashboard',this)"><span class="ic">◈</span> Dashboard</div>
+    <div class="ni" onclick="go('registry',this)"><span class="ic">♡</span> Registry Builder</div>
+    <div class="ni" onclick="go('invitations',this)"><span class="ic">✉</span> Invitations <span class="ndot"></span></div>
+    <div class="ni" onclick="go('story',this)"><span class="ic">◎</span> Wedding Story</div>
+    <div class="ni" onclick="go('vendor',this)"><span class="ic">⬡</span> Vendor Console</div>
+    <div class="ni" onclick="go('analytics',this)"><span class="ic">◉</span> Analytics</div>
+    <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
   </nav>
-  <div class="sidebar-bottom">
-    <div style="font-size:10px;color:#5a4a3a;margin-bottom:6px">Days to your wedding</div>
-    <div class="days-left">246</div>
-    <div style="font-size:10px;color:#5a4a3a;margin-top:4px">days of magic ahead</div>
+  <div class="s-bot">
+    <div style="font-size:10px;color:#5a4a3a;margin-bottom:4px">Days to your wedding</div>
+    <div class="days">246</div>
+    <div style="font-size:10px;color:#5a4a3a;margin-top:3px">days of magic ahead</div>
   </div>
 </aside>
 
-<!-- MAIN -->
-<main class="main">
-  <div class="page-header">
+<div class="main">
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="t-dashboard" class="tab active">
+  <div class="ph">
+    <div><div class="pt">Good morning, <em>Aanya</em> 🌸</div><div class="ps">Gift pool overview · 246 days to go</div></div>
+    <div style="display:flex;gap:9px">
+      <button class="btno" onclick="go('invitations',document.querySelector('[onclick*=invitations]'))">📤 Share Registry</button>
+      <button class="btn" onclick="go('registry',document.querySelector('[onclick*=registry]'))">+ Add Registry Item</button>
+    </div>
+  </div>
+  <div class="g4">
+    <div class="sc"><div class="sl">Gift Pool Balance</div><div class="sv"><span style="font-size:13px;color:var(--muted)">₹</span>3,42,500</div><div class="ss">↑ ₹18,000 this week</div></div>
+    <div class="sc"><div class="sl">Guests Gifted</div><div class="sv">84</div><div class="ss">of 240 invited · 35%</div></div>
+    <div class="sc"><div class="sl">Registry Funded</div><div class="sv">68<span style="font-size:13px;color:var(--muted)">%</span></div><div class="ss">5 of 8 categories done</div></div>
+    <div class="sc"><div class="sl">Vendors Paid</div><div class="sv"><span style="font-size:13px;color:var(--muted)">₹</span>1,15,000</div><div class="ss">3 paid · ₹85K pending</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Gift Pool Wallet</div><span class="ca" onclick="go('analytics',document.querySelector('[onclick*=analytics]'))">All Transactions →</span></div>
+      <div class="cb">
+        <div class="wv">
+          <div class="wl">Amazon Pay Gift Card Balance</div>
+          <div class="wa"><span>₹</span>3,42,500</div>
+          <div class="wm">
+            <div><div class="wml">Target</div><div class="wmv">₹5,00,000</div></div>
+            <div><div class="wml">Cards Issued</div><div class="wmv">84</div></div>
+            <div><div class="wml">Float p.a.</div><div class="wmv">₹3,420</div></div>
+          </div>
+          <div class="wb"><div class="wbf"></div></div>
+          <div class="wbl"><span>₹0</span><span>68% funded</span><span>₹5,00,000</span></div>
+        </div>
+        <div style="display:flex;gap:9px">
+          <button class="btno" style="flex:1;font-size:11px">📄 Statement</button>
+          <button class="btn" style="flex:1;font-size:11px" onclick="go('vendor',document.querySelector('[onclick*=vendor]'))">💳 Pay Vendor</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Registry Overview</div><span class="ca" onclick="go('registry',document.querySelector('[onclick*=registry]'))">Edit →</span></div>
+      <div class="cb">
+        <div class="rg">
+          <div class="ri"><div class="rt"><div class="rc">Nest</div><span>🏠</span></div><div class="rn">Home Appliances</div><div class="pb"><div class="pf" style="width:90%"></div></div><div class="pl"><span class="ra">₹90,000</span><span>₹1,00,000</span></div></div>
+          <div class="ri"><div class="rt"><div class="rc">Wander</div><span>✈️</span></div><div class="rn">Honeymoon Fund</div><div class="pb"><div class="pf" style="width:55%"></div></div><div class="pl"><span class="ra">₹82,500</span><span>₹1,50,000</span></div></div>
+          <div class="ri"><div class="rt"><div class="rc">Celebrate</div><span>🥂</span></div><div class="rn">Wedding Décor</div><div class="pb"><div class="pf" style="width:80%"></div></div><div class="pl"><span class="ra">₹1,20,000</span><span>₹1,50,000</span></div></div>
+          <div class="ri"><div class="rt"><div class="rc">Bless</div><span>🙏</span></div><div class="rn">Puja & Rituals</div><div class="pb"><div class="pf" style="width:40%"></div></div><div class="pl"><span class="ra">₹20,000</span><span>₹50,000</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Recent Gifts</div><span class="ca" onclick="go('invitations',document.querySelector('[onclick*=invitations]'))">View All 84 →</span></div>
+      <div class="cb">
+        <div class="gr"><div class="gav">P</div><div><div class="gn">Priya Sharma</div><div class="gc">Honeymoon Fund · 🎥</div></div><div class="gam">₹5,000</div><div class="gt">2h</div><div class="gmed">▶</div></div>
+        <div class="gr"><div class="gav">V</div><div><div class="gn">Vikram Nair</div><div class="gc">Home Appliances</div></div><div class="gam">₹11,000</div><div class="gt">Yesterday</div></div>
+        <div class="gr"><div class="gav">S</div><div><div class="gn">Sunita & Raj Kapoor</div><div class="gc">Wedding Décor · 🔊</div></div><div class="gam">₹21,000</div><div class="gt">2d</div><div class="gmed">🔊</div></div>
+        <div class="gr"><div class="gav">D</div><div><div class="gn">Deepika Malhotra</div><div class="gc">Puja & Rituals</div></div><div class="gam">₹3,500</div><div class="gt">3d</div></div>
+        <div class="gr"><div class="gav">A</div><div><div class="gn">Amit & Neha Shah</div><div class="gc">Home Appliances</div></div><div class="gam">₹15,000</div><div class="gt">4d</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Vendor Snapshot</div><span class="ca" onclick="go('vendor',document.querySelector('[onclick*=vendor]'))">Vendor Console →</span></div>
+      <div class="cb">
+        <div style="background:var(--gold-pale);border-radius:8px;padding:11px 13px;margin-bottom:13px;display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:10px;color:var(--muted)">Available to pay</div><div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600">₹3,42,500</div></div>
+          <button class="btn" style="font-size:11px" onclick="openPay()">Pay Now</button>
+        </div>
+        <div class="gr"><div style="font-size:16px">🍽️</div><div style="flex:1"><div class="gn">Regal Caterers</div><div class="gc">Catering</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:500">₹80,000</div><span class="badge bo">Pending</span></div></div>
+        <div class="gr"><div style="font-size:16px">🌸</div><div style="flex:1"><div class="gn">Blooms & Beyond</div><div class="gc">Floral Décor</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:500">₹45,000</div><span class="badge bg">Paid ✓</span></div></div>
+        <div class="gr"><div style="font-size:16px">📸</div><div style="flex:1"><div class="gn">Frames by Arjun</div><div class="gc">Photography</div></div><div style="text-align:right"><div style="font-size:12px;font-weight:500">₹35,000</div><span class="badge bb">Escrow</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REGISTRY BUILDER ═══ -->
+<div id="t-registry" class="tab">
+  <div class="ph">
+    <div><div class="pt">Registry <em>Builder</em></div><div class="ps">Curate meaningful gifting categories for your guests</div></div>
+    <button class="btn" onclick="toast('New category form opened!')">+ Add Category</button>
+  </div>
+  <div class="rbc">
+    <div class="rbh" onclick="tog2(this)"><div class="rbe">🏠</div><div class="rbi"><div class="rbin">Nest — Home & Living</div><div class="rbis">₹90,000 raised of ₹1,00,000 · 90% funded</div></div><div style="display:flex;gap:7px;align-items:center"><span class="badge bg">90% Funded</span><span style="color:var(--muted)">▾</span></div></div>
+    <div class="rbb">
+      <div class="rar"><div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TARGET</label><input class="ri2" value="₹1,00,000" style="width:130px"></div><div style="flex:1"><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TITLE</label><input class="ri2" value="Home Appliances" style="width:100%"></div></div>
+      <textarea class="ri2" rows="2">Help us set up our first home — from the coffee maker Aanya can't live without, to the air fryer Rohan insists they need.</textarea>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" onclick="toast('Registry saved!')">Save</button><button class="btno">Remove</button></div>
+    </div>
+  </div>
+  <div class="rbc">
+    <div class="rbh" onclick="tog2(this)"><div class="rbe">✈️</div><div class="rbi"><div class="rbin">Wander — Honeymoon Fund</div><div class="rbis">₹82,500 raised of ₹1,50,000 · 55% funded</div></div><div style="display:flex;gap:7px;align-items:center"><span class="badge bk">55% Funded</span><span style="color:var(--muted)">▾</span></div></div>
+    <div class="rbb" style="display:none">
+      <div class="rar"><div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TARGET</label><input class="ri2" value="₹1,50,000" style="width:130px"></div><div style="flex:1"><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TITLE</label><input class="ri2" value="Honeymoon Fund" style="width:100%"></div></div>
+      <textarea class="ri2" rows="2">Dreaming of Tuscany and Santorini — help us make our first trip as husband and wife utterly magical.</textarea>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" onclick="toast('Registry saved!')">Save</button><button class="btno">Remove</button></div>
+    </div>
+  </div>
+  <div class="rbc">
+    <div class="rbh" onclick="tog2(this)"><div class="rbe">🥂</div><div class="rbi"><div class="rbin">Celebrate — Wedding Décor</div><div class="rbis">₹1,20,000 raised of ₹1,50,000 · 80% funded</div></div><div style="display:flex;gap:7px;align-items:center"><span class="badge bk">80% Funded</span><span style="color:var(--muted)">▾</span></div></div>
+    <div class="rbb" style="display:none">
+      <div class="rar"><div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TARGET</label><input class="ri2" value="₹1,50,000" style="width:130px"></div><div style="flex:1"><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TITLE</label><input class="ri2" value="Wedding Décor" style="width:100%"></div></div>
+      <textarea class="ri2" rows="2">Marigolds, fairy lights, and flower walls — help us make the wedding look like the dream we've been planning.</textarea>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" onclick="toast('Registry saved!')">Save</button><button class="btno">Remove</button></div>
+    </div>
+  </div>
+  <div class="rbc">
+    <div class="rbh" onclick="tog2(this)"><div class="rbe">🙏</div><div class="rbi"><div class="rbin">Bless — Puja & Rituals</div><div class="rbis">₹20,000 raised of ₹50,000 · 40% funded</div></div><div style="display:flex;gap:7px;align-items:center"><span class="badge bo">40% Funded</span><span style="color:var(--muted)">▾</span></div></div>
+    <div class="rbb" style="display:none">
+      <div class="rar"><div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TARGET</label><input class="ri2" value="₹50,000" style="width:130px"></div><div style="flex:1"><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">TITLE</label><input class="ri2" value="Puja & Rituals" style="width:100%"></div></div>
+      <textarea class="ri2" rows="2">Our families' traditions are the heart of our wedding. Help us honour every ritual beautifully.</textarea>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" onclick="toast('Registry saved!')">Save</button><button class="btno">Remove</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INVITATIONS ═══ -->
+<div id="t-invitations" class="tab">
+  <div class="ph">
+    <div><div class="pt"><em>Invitations</em> & Guest List</div><div class="ps">Share your registry link and track who has gifted</div></div>
+    <button class="btn">+ Add Guests</button>
+  </div>
+  <div class="ih">
+    <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:5px">Your Registry Link</div>
+    <div class="ilb"><div class="il">weddingpay.in/aanya-rohan-2026</div><button class="ic2" onclick="toast('Link copied to clipboard!')">Copy</button></div>
+    <div class="sr">
+      <button class="sb" onclick="toast('Opening WhatsApp...')">💬 WhatsApp</button>
+      <button class="sb" onclick="toast('Opening email...')">📧 Email</button>
+      <button class="sb" onclick="toast('SMS blast queued for 156 guests!')">📱 SMS Blast</button>
+      <button class="sb" onclick="toast('QR code downloaded!')">📋 QR Code</button>
+    </div>
+  </div>
+  <div class="fr">
+    <div class="fs"><div class="fv">240</div><div class="fl">Invited</div></div>
+    <div class="fs"><div class="fv">184</div><div class="fl">Link Opened</div><div class="fp">77% open rate</div></div>
+    <div class="fs"><div class="fv">84</div><div class="fl">Gifted</div><div class="fp">35% gift rate</div></div>
+    <div class="fs"><div class="fv">156</div><div class="fl">Pending</div><div class="fp" style="color:#E65100">Send reminder?</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Guest List</div><div style="display:flex;gap:8px"><button class="btno" style="font-size:11px" onclick="toast('Reminder sent to 156 guests!')">Send Reminders</button><button class="btn" style="font-size:11px" onclick="toast('CSV downloaded!')">Export CSV</button></div></div>
+    <div class="cb" style="padding:0">
+      <table>
+        <thead><tr><th>Name</th><th>Phone</th><th>Relation</th><th>Status</th><th>Gift</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Priya Sharma</strong></td><td>+91 98765 43210</td><td>Friend of Bride</td><td><span class="badge bg">Gifted ✓</span></td><td>₹5,000</td><td><button class="tlink" onclick="toast('Thank you message sent!')">Thank →</button></td></tr>
+          <tr><td><strong>Vikram Nair</strong></td><td>+91 87654 32109</td><td>Friend of Groom</td><td><span class="badge bg">Gifted ✓</span></td><td>₹11,000</td><td><button class="tlink" onclick="toast('Thank you message sent!')">Thank →</button></td></tr>
+          <tr><td><strong>Sunita Kapoor</strong></td><td>+91 76543 21098</td><td>Family</td><td><span class="badge bg">Gifted ✓</span></td><td>₹21,000</td><td><button class="tlink" onclick="toast('Thank you message sent!')">Thank →</button></td></tr>
+          <tr><td><strong>Rahul Mehta</strong></td><td>+91 65432 10987</td><td>Colleague</td><td><span class="badge bo">Opened</span></td><td>—</td><td><button class="tlink" onclick="toast('Reminder sent to Rahul!')">Remind →</button></td></tr>
+          <tr><td><strong>Ananya Singh</strong></td><td>+91 54321 09876</td><td>Friend of Bride</td><td><span class="badge bo">Opened</span></td><td>—</td><td><button class="tlink" onclick="toast('Reminder sent to Ananya!')">Remind →</button></td></tr>
+          <tr><td><strong>Karan Johar</strong></td><td>+91 43210 98765</td><td>Friend of Groom</td><td><span class="badge" style="background:#f5f5f5;color:#999">Not Opened</span></td><td>—</td><td><button class="tlink" onclick="toast('Invitation resent to Karan!')">Resend →</button></td></tr>
+          <tr><td><strong>Deepika Malhotra</strong></td><td>+91 32109 87654</td><td>Family</td><td><span class="badge bg">Gifted ✓</span></td><td>₹3,500</td><td><button class="tlink" onclick="toast('Thank you message sent!')">Thank →</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WEDDING STORY ═══ -->
+<div id="t-story" class="tab">
+  <div class="ph">
+    <div><div class="pt">Wedding <em>Story</em> Microsite</div><div class="ps">Your public page — what guests see when they open your link</div></div>
+    <div style="display:flex;gap:9px">
+      <button class="btno" onclick="window.open('guest_view.html','_blank')">👁 Preview Live</button>
+      <button class="btn" onclick="toast('Changes published to aanya-rohan.weddingpay.in!')">Publish Changes</button>
+    </div>
+  </div>
+  <div class="sp">
+    <div class="sh">
+      <div class="slb">● Live</div>
+      <div class="sht">Aanya & Rohan</div>
+      <div class="shs">28 NOVEMBER 2026 · THE TAJ MAHAL PALACE, MUMBAI</div>
+      <div style="display:flex;gap:26px;margin-top:14px">
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)">84</div><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.1em">GIFTS</div></div>
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)">68%</div><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.1em">FUNDED</div></div>
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)">246</div><div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.1em">DAYS</div></div>
+      </div>
+    </div>
+    <div class="sbs">
+      <div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.08em">Edit Your Story Page</div>
+      <div class="ser">
+        <div class="sf"><label>Couple Names</label><input value="Aanya & Rohan Mehta"></div>
+        <div class="sf"><label>Wedding Date</label><input value="28 November 2026"></div>
+        <div class="sf"><label>Venue</label><input value="The Taj Mahal Palace, Mumbai"></div>
+        <div class="sf"><label>Venue City</label><input value="Mumbai"></div>
+      </div>
+      <div class="sf" style="margin-top:12px"><label>Your Love Story</label><textarea>We met at a rainy Sunday in a Koregaon Park café in 2021 — Rohan was trying to fix his laptop, Aanya was judging his terrible taste in coffee. Three years, fourteen cities, and one unforgettable proposal at Udaipur later, here we are.</textarea></div>
+      <div class="dr"><div style="font-size:10px;color:var(--muted)">YOUR CUSTOM DOMAIN</div><div class="dt">aanya-rohan.weddingpay.in</div><span class="badge bg">Active ✓</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VENDOR CONSOLE ═══ -->
+<div id="t-vendor" class="tab">
+  <div class="ph">
+    <div><div class="pt"><em>Vendor</em> Console</div><div class="ps">Pay wedding vendors directly from your gift card balance</div></div>
+    <button class="btn" onclick="toast('Vendor onboarding flow opened!')">+ Add Vendor</button>
+  </div>
+  <div class="wsb">
+    <div><div class="wsbl">AVAILABLE IN GIFT WALLET</div><div class="wsbv">₹3,42,500</div></div>
+    <div style="text-align:right"><div class="wsbl">TOTAL PAID TO VENDORS</div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:rgba(255,255,255,0.8)">₹1,15,000</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Your Vendors</div><span class="ca" onclick="toast('Ledger downloaded!')">Download Ledger</span></div>
+    <div class="cb" style="padding:0">
+      <table>
+        <thead><tr><th></th><th>Vendor</th><th>Type</th><th>KYC</th><th>Amount Due</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><div class="vi">🍽️</div></td><td><strong>Regal Caterers</strong><br><span style="font-size:10px;color:var(--muted)">GST: 27AABCR1234A1Z5</span></td><td>Catering</td><td><span class="badge bg">Verified ✓</span></td><td style="font-weight:600">₹80,000</td><td><span class="badge bo">Pending</span></td><td><button class="pb2" onclick="openPay('Regal Caterers','80,000')">Pay Now</button></td></tr>
+          <tr><td><div class="vi">🌸</div></td><td><strong>Blooms & Beyond</strong><br><span style="font-size:10px;color:var(--muted)">GST: 27AABCB5678A1Z2</span></td><td>Floral Décor</td><td><span class="badge bg">Verified ✓</span></td><td style="font-weight:600">₹45,000</td><td><span class="badge bg">Paid ✓</span></td><td><button class="pb2" disabled>Paid</button></td></tr>
+          <tr><td><div class="vi">📸</div></td><td><strong>Frames by Arjun</strong><br><span style="font-size:10px;color:var(--muted)">GST: Pending</span></td><td>Photography</td><td><span class="badge bb">In Review</span></td><td style="font-weight:600">₹35,000</td><td><span class="badge bb">Escrow</span></td><td><button class="pb2" disabled>In Escrow</button></td></tr>
+          <tr><td><div class="vi">🎵</div></td><td><strong>Rhythm Entertainment</strong><br><span style="font-size:10px;color:var(--muted)">GST: 27AABCR9012A1Z8</span></td><td>Music & DJ</td><td><span class="badge bg">Verified ✓</span></td><td style="font-weight:600">₹25,000</td><td><span class="badge bg">Paid ✓</span></td><td><button class="pb2" disabled>Paid</button></td></tr>
+          <tr><td><div class="vi">🏨</div></td><td><strong>Taj Banquet Team</strong><br><span style="font-size:10px;color:var(--muted)">GST: 27AABCT3456A1Z1</span></td><td>Venue</td><td><span class="badge bg">Verified ✓</span></td><td style="font-weight:600">₹2,50,000</td><td><span class="badge bo">Pending</span></td><td><button class="pb2" onclick="openPay('Taj Banquet Team','2,50,000')">Pay Now</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ANALYTICS ═══ -->
+<div id="t-analytics" class="tab">
+  <div class="ph">
+    <div><div class="pt">Gift <em>Analytics</em></div><div class="ps">Real-time insights on your gift pool and guest behaviour</div></div>
+    <button class="btno" onclick="toast('Report downloaded!')">Export Report</button>
+  </div>
+  <div class="kg">
+    <div class="kc"><div class="kl">Total Gift Pool</div><div class="kv">₹3,42,500</div><div class="kt">↑ 68% of ₹5L target</div></div>
+    <div class="kc"><div class="kl">Avg Gift Size</div><div class="kv">₹4,077</div><div class="kt">↑ ₹312 vs last week</div></div>
+    <div class="kc"><div class="kl">Guest Gifting Rate</div><div class="kv">35%</div><div class="kt">On target ✓</div></div>
+    <div class="kc"><div class="kl">Gifts with Media</div><div class="kv">31%</div><div class="kt">26 video · 8 voice</div></div>
+    <div class="kc"><div class="kl">Float Income p.a.</div><div class="kv">₹3,420</div><div class="kt">On ₹3.4L outstanding</div></div>
+    <div class="kc"><div class="kl">Vendor Payments</div><div class="kv">₹1,15,000</div><div class="kt">3 settled · 2 pending</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Registry Funding</div></div>
+      <div class="cb">
+        <div class="br"><div class="brl">Home Appliances</div><div class="brt"><div class="brf" style="width:90%;background:var(--success)">90%</div></div><div class="brv">₹90,000</div></div>
+        <div class="br"><div class="brl">Wedding Décor</div><div class="brt"><div class="brf" style="width:80%;background:var(--gold)">80%</div></div><div class="brv">₹1,20,000</div></div>
+        <div class="br"><div class="brl">Honeymoon Fund</div><div class="brt"><div class="brf" style="width:55%;background:#B8923E">55%</div></div><div class="brv">₹82,500</div></div>
+        <div class="br"><div class="brl">Puja & Rituals</div><div class="brt"><div class="brf" style="width:40%;background:#E8B84B">40%</div></div><div class="brv">₹20,000</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Payment Methods</div></div>
+      <div class="cb">
+        <div class="br"><div class="brl">Amazon Pay</div><div class="brt"><div class="brf" style="width:55%;background:var(--gold)">55% · 46 gifts</div></div></div>
+        <div class="br"><div class="brl">UPI</div><div class="brt"><div class="brf" style="width:32%;background:#3366CC">32% · 27 gifts</div></div></div>
+        <div class="br"><div class="brl">Card</div><div class="brt"><div class="brf" style="width:13%;background:var(--success)">13% · 11</div></div></div>
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em">Weekly Gift Activity</div>
+          <div class="br"><div class="brl">This week</div><div class="brt"><div class="brf" style="width:85%;background:var(--gold)">₹18,000</div></div></div>
+          <div class="br"><div class="brl">Last week</div><div class="brt"><div class="brf" style="width:65%;background:#B8923E">₹13,500</div></div></div>
+          <div class="br"><div class="brl">2 weeks ago</div><div class="brt"><div class="brf" style="width:90%;background:var(--gold)">₹21,000</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SETTINGS ═══ -->
+<div id="t-settings" class="tab">
+  <div class="ph"><div><div class="pt">Account <em>Settings</em></div><div class="ps">Manage your plan, notifications and preferences</div></div></div>
+  <div class="g2">
     <div>
-      <div class="page-title">Good morning, <em>Aanya</em> 🌸</div>
-      <div class="page-subtitle">Here's your gifting overview — 246 days to go</div>
-    </div>
-    <div class="header-actions">
-      <button class="btn-outline">📤 Share Registry</button>
-      <button class="btn-primary">+ Add Registry Item</button>
-    </div>
-  </div>
-
-  <!-- STATS -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">♡</div>
-      <div class="stat-label">Gift Pool Balance</div>
-      <div class="stat-value"><span style="font-size:16px;color:var(--muted)">₹</span>3,42,500</div>
-      <div class="stat-sub">↑ ₹18,000 this week</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">◉</div>
-      <div class="stat-label">Guests Gifted</div>
-      <div class="stat-value">84</div>
-      <div class="stat-sub">of 240 invited · 35% rate</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">◈</div>
-      <div class="stat-label">Registry Fulfilled</div>
-      <div class="stat-value">68<span style="font-size:16px;color:var(--muted)">%</span></div>
-      <div class="stat-sub">5 of 8 categories funded</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">⬡</div>
-      <div class="stat-label">Vendor Payments</div>
-      <div class="stat-value"><span style="font-size:16px;color:var(--muted)">₹</span>1,15,000</div>
-      <div class="stat-sub">3 vendors paid · ₹85K pending</div>
-    </div>
-  </div>
-
-  <!-- ROW 1 -->
-  <div class="section-grid">
-    <!-- GIFT POOL WALLET -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Gift Pool Wallet</div>
-        <a class="card-action">View All Transactions →</a>
+      <div class="ss2">
+        <h3>Your Plan</h3>
+        <div class="pc"><div><div class="pn">Classic</div><div style="font-size:11px;color:var(--muted)">Standard features</div></div><div class="pp">₹4,999</div></div>
+        <div class="pc cur"><div><div class="pn">Premium ✓ Current</div><div style="font-size:11px;color:var(--warm)">Custom design · Video messages · Custom domain</div></div><div class="pp">₹9,999</div></div>
+        <div class="pc"><div><div class="pn">Luxury</div><div style="font-size:11px;color:var(--muted)">Bespoke · Concierge · Physical kit</div></div><div class="pp">₹24,999</div></div>
+        <button class="btno" style="width:100%;margin-top:9px" onclick="toast('Upgrade flow coming soon!')">Upgrade to Luxury →</button>
       </div>
-      <div class="card-body">
-        <div class="wallet-visual">
-          <div class="wallet-label">Amazon Pay Gift Card Balance</div>
-          <div class="wallet-amount"><span>₹</span>3,42,500</div>
-          <div class="wallet-meta">
-            <div class="wallet-meta-item">
-              <div class="wm-label">Target</div>
-              <div class="wm-val">₹5,00,000</div>
-            </div>
-            <div class="wallet-meta-item">
-              <div class="wm-label">Cards Issued</div>
-              <div class="wm-val">84 cards</div>
-            </div>
-            <div class="wallet-meta-item">
-              <div class="wm-label">Float Earning</div>
-              <div class="wm-val">₹3,420 p.a.</div>
-            </div>
-          </div>
-          <div class="wallet-progress"><div class="wallet-progress-fill"></div></div>
-          <div class="wallet-progress-label"><span>₹0</span><span>68% funded</span><span>₹5,00,000</span></div>
-        </div>
-        <div style="display:flex;gap:10px">
-          <button class="btn-outline" style="flex:1;font-size:12px">📄 Download Statement</button>
-          <button class="btn-primary" style="flex:1;font-size:12px">💳 Pay a Vendor</button>
-        </div>
+      <div class="ss2">
+        <h3>Notifications</h3>
+        <div class="srow"><div><div class="srl">New gift received</div><div class="srs">WhatsApp + Email alert</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">Guest opens link</div><div class="srs">Email digest (daily)</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">Vendor payment settled</div><div class="srs">Immediate alert</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">Weekly gift summary</div><div class="srs">Every Monday</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
       </div>
     </div>
-
-    <!-- REGISTRY -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Your Registry</div>
-        <a class="card-action">Edit Registry →</a>
+    <div>
+      <div class="ss2">
+        <h3>Account Details</h3>
+        <div class="srow"><div><div class="srl">Aanya Mehta</div><div class="srs">aanya.mehta@gmail.com · +91 98765 43210</div></div><button class="btno" style="font-size:11px" onclick="toast('Edit profile opened!')">Edit</button></div>
+        <div class="srow"><div><div class="srl">Rohan Mehta</div><div class="srs">rohan.mehta@gmail.com · +91 87654 32109</div></div><button class="btno" style="font-size:11px" onclick="toast('Edit profile opened!')">Edit</button></div>
+        <div class="srow"><div><div class="srl">KYC Status</div><div class="srs">PAN verified · Aadhaar pending</div></div><span class="badge bo">Partial</span></div>
       </div>
-      <div class="card-body">
-        <div class="registry-grid">
-          <div class="registry-item">
-            <div class="registry-item-header">
-              <div class="registry-category">Nest</div>
-              <div class="registry-emoji">🏠</div>
-            </div>
-            <div class="registry-name">Home Appliances</div>
-            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:90%"></div></div>
-            <div class="registry-amounts"><span class="raised">₹90,000</span><span>of ₹1,00,000</span></div>
-          </div>
-          <div class="registry-item">
-            <div class="registry-item-header">
-              <div class="registry-category">Wander</div>
-              <div class="registry-emoji">✈️</div>
-            </div>
-            <div class="registry-name">Honeymoon Fund</div>
-            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:55%"></div></div>
-            <div class="registry-amounts"><span class="raised">₹82,500</span><span>of ₹1,50,000</span></div>
-          </div>
-          <div class="registry-item">
-            <div class="registry-item-header">
-              <div class="registry-category">Celebrate</div>
-              <div class="registry-emoji">🥂</div>
-            </div>
-            <div class="registry-name">Wedding Décor</div>
-            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:80%"></div></div>
-            <div class="registry-amounts"><span class="raised">₹1,20,000</span><span>of ₹1,50,000</span></div>
-          </div>
-          <div class="registry-item">
-            <div class="registry-item-header">
-              <div class="registry-category">Bless</div>
-              <div class="registry-emoji">🙏</div>
-            </div>
-            <div class="registry-name">Puja & Rituals</div>
-            <div class="registry-progress-bar"><div class="registry-progress-fill" style="width:40%"></div></div>
-            <div class="registry-amounts"><span class="raised">₹20,000</span><span>of ₹50,000</span></div>
-          </div>
-        </div>
+      <div class="ss2">
+        <h3>Features & Privacy</h3>
+        <div class="srow"><div><div class="srl">Custom domain</div><div class="srs">aanya-rohan.weddingpay.in</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">Multilingual page</div><div class="srs">Hindi & English</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">Show gift amounts</div><div class="srs">Visible on microsite</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">Auto thank-you messages</div><div class="srs">WhatsApp on every gift</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="srow"><div><div class="srl">DPDP Compliance</div><div class="srs">Guest data deleted 90d post-wedding</div></div><span class="badge bg">Active</span></div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ROW 2 -->
-  <div class="section-grid">
-    <!-- RECENT GIFTS -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Recent Gifts</div>
-        <a class="card-action">View All 84 →</a>
-      </div>
-      <div class="card-body">
-        <div class="tab-row">
-          <div class="tab active">All</div>
-          <div class="tab">With Messages</div>
-          <div class="tab">Pending Thanks</div>
-        </div>
-        <div class="gift-list">
-          <div class="gift-item">
-            <div class="gift-avatar">P</div>
-            <div class="gift-info">
-              <div class="gift-name">Priya Sharma</div>
-              <div class="gift-cat">Honeymoon Fund · 🎥 Video message</div>
-            </div>
-            <div style="text-align:right">
-              <div class="gift-amount">₹5,000</div>
-              <div class="gift-time">2 hours ago</div>
-            </div>
-            <div class="gift-has-media">▶</div>
-          </div>
-          <div class="gift-item">
-            <div class="gift-avatar">V</div>
-            <div class="gift-info">
-              <div class="gift-name">Vikram Nair</div>
-              <div class="gift-cat">Home Appliances</div>
-            </div>
-            <div style="text-align:right">
-              <div class="gift-amount">₹11,000</div>
-              <div class="gift-time">Yesterday</div>
-            </div>
-          </div>
-          <div class="gift-item">
-            <div class="gift-avatar">S</div>
-            <div class="gift-info">
-              <div class="gift-name">Sunita & Raj Kapoor</div>
-              <div class="gift-cat">Wedding Décor · 🎤 Voice message</div>
-            </div>
-            <div style="text-align:right">
-              <div class="gift-amount">₹21,000</div>
-              <div class="gift-time">2 days ago</div>
-            </div>
-            <div class="gift-has-media">🔊</div>
-          </div>
-          <div class="gift-item">
-            <div class="gift-avatar">D</div>
-            <div class="gift-info">
-              <div class="gift-name">Deepika Malhotra</div>
-              <div class="gift-cat">Puja & Rituals</div>
-            </div>
-            <div style="text-align:right">
-              <div class="gift-amount">₹3,500</div>
-              <div class="gift-time">3 days ago</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+</div><!-- /main -->
 
-    <!-- VENDOR CONSOLE -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Vendor Console</div>
-        <a class="card-action">+ Add Vendor</a>
-      </div>
-      <div class="card-body">
-        <div style="background:var(--gold-pale);border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-size:11px;color:var(--muted)">Available to pay vendors</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--deep)">₹3,42,500</div>
-          </div>
-          <button class="btn-primary" style="font-size:12px">Initiate Payment</button>
-        </div>
-        <div class="vendor-list">
-          <div class="vendor-item">
-            <div class="vendor-icon">🍽️</div>
-            <div class="vendor-info">
-              <div class="vendor-name">Regal Caterers</div>
-              <div class="vendor-type">Catering · GST Verified ✓</div>
-            </div>
-            <div class="vendor-amount">
-              <div class="vendor-due">₹80,000</div>
-              <div><span class="vendor-status status-pending">Pending</span></div>
-            </div>
-          </div>
-          <div class="vendor-item">
-            <div class="vendor-icon">🌸</div>
-            <div class="vendor-info">
-              <div class="vendor-name">Blooms & Beyond</div>
-              <div class="vendor-type">Floral Décor · GST Verified ✓</div>
-            </div>
-            <div class="vendor-amount">
-              <div class="vendor-due">₹45,000</div>
-              <div><span class="vendor-status status-paid">Paid ✓</span></div>
-            </div>
-          </div>
-          <div class="vendor-item">
-            <div class="vendor-icon">📸</div>
-            <div class="vendor-info">
-              <div class="vendor-name">Frames by Arjun</div>
-              <div class="vendor-type">Photography</div>
-            </div>
-            <div class="vendor-amount">
-              <div class="vendor-due">₹35,000</div>
-              <div><span class="vendor-status status-escrow">In Escrow</span></div>
-            </div>
-          </div>
-          <div class="vendor-item">
-            <div class="vendor-icon">🎵</div>
-            <div class="vendor-info">
-              <div class="vendor-name">Rhythm Entertainment</div>
-              <div class="vendor-type">Music & DJ</div>
-            </div>
-            <div class="vendor-amount">
-              <div class="vendor-due">₹25,000</div>
-              <div><span class="vendor-status status-paid">Paid ✓</span></div>
-            </div>
-          </div>
-        </div>
+<!-- PAYMENT MODAL -->
+<div class="mb" id="payM">
+  <div class="mo">
+    <div class="moh"><div class="moht">Initiate Vendor Payment</div><button class="moc" onclick="closePay()">✕</button></div>
+    <div class="mob">
+      <label class="ml">Vendor</label><input class="mi" id="mv" readonly>
+      <label class="ml">Amount (₹)</label><input class="mi" id="ma" type="text">
+      <label class="ml">Note (optional)</label><input class="mi" placeholder="e.g. Final catering payment">
+      <div style="background:var(--gold-pale);border-radius:8px;padding:11px;margin-bottom:14px;font-size:11px;color:var(--warm)">💡 Funds held in 24-hour escrow before vendor settlement.</div>
+      <div class="mf">
+        <button class="btno" onclick="closePay()">Cancel</button>
+        <button class="btn" onclick="confirmPay()">Confirm & Pay</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ROW 3 -->
-  <div class="section-grid">
-    <!-- SHARE / INVITE -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Invite Guests</div>
-        <a class="card-action">Manage Invitations →</a>
-      </div>
-      <div class="card-body">
-        <div class="invite-panel">
-          <div style="font-size:13px;font-weight:500;color:var(--deep)">Your wedding registry link</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:4px">Share this link — guests need no app or account</div>
-          <div class="invite-link-row">
-            <input class="invite-link-input" value="weddingpay.in/aanya-rohan-2026" readonly>
-            <button class="btn-primary" style="font-size:12px">Copy</button>
-          </div>
-          <div class="share-buttons">
-            <button class="share-btn">💬 WhatsApp</button>
-            <button class="share-btn">📧 Email</button>
-            <button class="share-btn">📱 SMS Blast</button>
-            <button class="share-btn">📋 QR Code</button>
-          </div>
-        </div>
-        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-          <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Invitation stats</div>
-          <div style="display:flex;gap:24px">
-            <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600">240</div><div style="font-size:11px;color:var(--muted)">Invited</div></div>
-            <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--success)">84</div><div style="font-size:11px;color:var(--muted)">Gifted</div></div>
-            <div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--gold)">156</div><div style="font-size:11px;color:var(--muted)">Pending</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="toast" id="toastEl"></div>
 
-    <!-- MICROSITE PREVIEW -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Wedding Story Microsite</div>
-        <a class="card-action">Preview Live →</a>
-      </div>
-      <div class="card-body">
-        <div class="microsite-preview">
-          <div class="microsite-hero">
-            <div class="microsite-title">Aanya & Rohan<br><span style="font-size:16px;font-style:normal;color:var(--gold-light)">28 November 2026 · Mumbai</span></div>
-          </div>
-          <div class="microsite-body">
-            <div class="microsite-stats">
-              <div class="ms-stat"><div class="ms-stat-val">84</div><div class="ms-stat-lab">Gifts</div></div>
-              <div class="ms-stat"><div class="ms-stat-val">4</div><div class="ms-stat-lab">Categories</div></div>
-              <div class="ms-stat"><div class="ms-stat-val">68%</div><div class="ms-stat-lab">Funded</div></div>
-            </div>
-            <button class="btn-edit-page">✏️ Edit Story Page</button>
-          </div>
-        </div>
-        <div style="margin-top:14px;font-size:11px;color:var(--muted)">
-          Your custom domain: <span style="color:var(--gold);font-weight:500">aanya-rohan.weddingpay.in</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</main>
-
+<script>
+  function go(id, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+    document.getElementById('t-' + id).classList.add('active');
+    if (el) el.classList.add('active');
+  }
+  function tog2(h) {
+    const b = h.nextElementSibling;
+    b.style.display = b.style.display === 'none' ? 'block' : 'none';
+  }
+  function openPay(v, a) {
+    document.getElementById('mv').value = v || '';
+    document.getElementById('ma').value = a || '';
+    document.getElementById('payM').classList.add('open');
+  }
+  function closePay() { document.getElementById('payM').classList.remove('open'); }
+  function confirmPay() { closePay(); toast('Payment initiated — funds in 24h escrow!'); }
+  document.getElementById('payM').addEventListener('click', e => { if (e.target === document.getElementById('payM')) closePay(); });
+  function toast(msg) {
+    const t = document.getElementById('toastEl');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
 </body>
 </html>
